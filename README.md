@@ -1,15 +1,34 @@
 > public URL: `ec2-52-10-122-233.us-west-2.compute.amazonaws.com`
 
 # access the deployment image
-`ssh -p 2200 -i ~/.ssh/udacity_key.rsa root@52.10.122.233`
 
-# deployment as root
-- create grading user 
-> useradd -U -mgrader -s/bin/bash grader 
+as `root`:
+> ssh -p 2200 -i ~/.ssh/udacity_key.rsa root@52.10.122.233
 
-- add `grader` to wheel using `visudo`
+as `grader`:
+> ssh -i ~/.ssh/grader_rsa -p 2200 grader@52.10.122.233
+
+# deployment (as root)
+
+- create `grader` user
+> useradd -U -m grader -s/bin/bash grader 
+
+- create a complex password for `grader` user
+> passwd `grader` 
+> <input password>
+
+- generate SSH keypair for `grader` user
+> ssh-keygen -t rsa -b 4096 -C "grader" 
+> save as `grader-id_rsa`
+
+- add `grader` user public key to SSH daemon
+> cat grader-id_rsa.pub >> ~/.ssh/authorized_keys
+
+- add `grader` to sudoer group as in [this guide](https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux_OpenStack_Platform/2/html/Getting_Started_Guide/ch02s03.html)
+> `visudo`
+
 - Configure the local timezone to UTC 0 
- > dpkg-reconfiguretzdata and set timezone to 'other / UTC' 
+ > dpkg-reconfiguretzdata -> set timezone to 'other / UTC' 
 
 - Change default SSH port from 22 to 2200 
 > Edit 'Port' setting under /etc/ssh/sshd_config 
