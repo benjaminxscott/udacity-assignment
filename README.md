@@ -18,8 +18,12 @@ as `grader`:
 > <input password>
 
 - generate SSH keypair for `grader` user
+> su grader
 > ssh-keygen -t rsa -b 4096 -C "grader" 
 > save as `grader-id_rsa`
+> mkdir ~/.ssh chmod 700 ~/.ssh
+> cat grader-id_rsa.pub >> ~/.ssh/authorized_keys  
+> chmod 600 ~/.ssh/authorized_keys 
 
 - add `grader` user public key to SSH daemon
 > cat grader-id_rsa.pub >> ~/.ssh/authorized_keys
