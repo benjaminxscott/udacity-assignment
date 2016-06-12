@@ -92,7 +92,7 @@ ufw enable
 ```
 import sys
 sys.path.insert(0,"/var/www/deploy_goldlist")
-from goldlist import goldlist application=goldlist
+from goldlist import app as application
 ```
 
 ## Install dependencies
