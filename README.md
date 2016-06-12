@@ -86,9 +86,14 @@ ufw enable
  > chown -R catalog:catalog /var/www/deploy_goldlist
 
 - create a WSGI config for the app
- 
-> echo -e "import sys\n sys.path.insert(0,"/var/www/deploy_goldlist")\nfrom goldlist import goldlist application=goldlist">/var/www/deploy_goldlist/goldlist.wsgi
 
+> cat > /var/www/deploy_goldlist/goldlist.wsgi
+
+```
+import sys
+sys.path.insert(0,"/var/www/deploy_goldlist")
+from goldlist import goldlist application=goldlist
+```
 
 ## Install dependencies
 - install app dependencies
@@ -139,11 +144,20 @@ ufw enable
 
 - create an apache vhost to handle incoming requests
  
-> echo -e "<VirtualHost*>ServerNameec2­52­10­122­233.us­west­2.compute.amazonaws.com
-WSGIDaemonProcessgoldlistuser=cataloggroup=catalogthreads=5WSGIScriptAlias/
-/var/www/deploy_goldlist/goldlist.wsgi<Directory/var/www/goldlist>WSGIProcessGroupgoldlist
-WSGIApplicationGroup%{GLOBAL}Orderdeny,allowAllowfromall</Directory></VirtualHost>" >
-/etc/apache2/sites­available/000­default.conf
+> cat > /etc/apache2/sites­available/000­default.conf
+
+```
+<VirtualHost*>
+ServerName ec2-52-10-122-233.us-west-2.compute.amazonaws.com
+WSGIDaemonProcess goldlist user=catalog group=catalog threads=5 
+WSGIScriptAlias /
+/var/www/deploy_goldlist/goldlist.wsgi
+<Directory /var/www/goldlist>
+WSGIProcessGroup goldlist
+WSGIApplicationGroup %{GLOBAL} Order deny,allow Allowfromall</Directory>
+</VirtualHost>
+```
+
 
 
 
