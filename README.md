@@ -137,14 +137,13 @@ ufw enable
  
 > echo -e "import sys\n sys.path.insert(0,"/var/www/deploy_goldlist")\nfrom goldlist import goldlist application=goldlist">/var/www/deploy_goldlist/goldlist.wsgi
 
-
 - create an apache vhost to handle incoming requests
+ 
 > echo -e "<VirtualHost*>ServerNameec2­52­10­122­233.us­west­2.compute.amazonaws.com
 WSGIDaemonProcessgoldlistuser=cataloggroup=catalogthreads=5WSGIScriptAlias/
 /var/www/deploy_goldlist/goldlist.wsgi<Directory/var/www/goldlist>WSGIProcessGroupgoldlist
 WSGIApplicationGroup%{GLOBAL}Orderdeny,allowAllowfromall</Directory></VirtualHost>" >
 /etc/apache2/sites­available/000­default.conf
-```
 
 
 
