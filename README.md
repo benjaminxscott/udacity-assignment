@@ -89,7 +89,7 @@ ufw enable
 ## Install dependencies
 - install app dependencies
 
-> apt-get install git python pip postgresql 
+> apt-get install git python pip postgresql python-psycopg2 libpq-dev 
 
 - install python dependencies 
 
@@ -101,9 +101,11 @@ ufw enable
 
 > service postgresl start
 
-- create postgres user `catalog` in DB
+- execute database commands from `postgres` user context:
 
 > su postgres
+
+- create postgres user `catalog` in DB
 
 > createuser --pwprompt --createdb catalog
 
@@ -112,6 +114,9 @@ ufw enable
 - create database and assign to `catalog` user
 
 > createdb listings --owner catalog
+
+- leave context of `postgres` user
+> exit
 
 - generate database tables
 
