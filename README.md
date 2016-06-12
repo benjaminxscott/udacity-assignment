@@ -58,13 +58,6 @@ ufw allow 123
 ufw enable
 ```
 
-## Install dependencies
-- install app dependencies
-> apt-get install git python pip postgresql 
-
-- install python dependencies 
-> pip install -r requirements.txt 
-
 ## Install the app
 
 - Get the latest app (without git history)
@@ -78,6 +71,14 @@ ufw enable
 - create a dedicated user to run the app  
  > useradd -U -m catalog 
  > chown -R catalog:catalog /var/www/deploy_goldlist
+
+
+## Install dependencies
+- install app dependencies
+> apt-get install git python pip postgresql 
+
+- install python dependencies 
+> pip install -r requirements.txt 
 
 ## Install the app database
 
