@@ -85,6 +85,10 @@ ufw enable
 
  > chown -R catalog:catalog /var/www/deploy_goldlist
 
+- create a WSGI config for the app
+ 
+> echo -e "import sys\n sys.path.insert(0,"/var/www/deploy_goldlist")\nfrom goldlist import goldlist application=goldlist">/var/www/deploy_goldlist/goldlist.wsgi
+
 
 ## Install dependencies
 - install app dependencies
@@ -132,10 +136,6 @@ ufw enable
 > apt-get install apache2 
 
 > apt-get install libapache2-mod-wsgi
-
-- create a WSGI config for the app
- 
-> echo -e "import sys\n sys.path.insert(0,"/var/www/deploy_goldlist")\nfrom goldlist import goldlist application=goldlist">/var/www/deploy_goldlist/goldlist.wsgi
 
 - create an apache vhost to handle incoming requests
  
