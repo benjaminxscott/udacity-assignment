@@ -90,8 +90,6 @@ ufw enable
 > cat > /var/www/deploy_goldlist/goldlist.wsgi
 
 ```
-import sys
-sys.path.insert(0,"/var/www/deploy_goldlist")
 from goldlist import app as application
 ```
 
@@ -149,7 +147,7 @@ from goldlist import app as application
 ```
 <VirtualHost*>
 ServerName ec2-52-10-122-233.us-west-2.compute.amazonaws.com
-WSGIDaemonProcess goldlist user=catalog group=catalog threads=5 
+WSGIDaemonProcess goldlist user=catalog group=catalog threads=5 python-path="/var/www/deploy_goldlist"
 WSGIScriptAlias /
 /var/www/deploy_goldlist/goldlist.wsgi
 <Directory /var/www/goldlist>
