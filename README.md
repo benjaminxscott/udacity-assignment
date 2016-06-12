@@ -1,14 +1,17 @@
-> public URL: `ec2-52-10-122-233.us-west-2.compute.amazonaws.com`
 
-# access the deployment image
+## Access the app
+`ec2-52-10-122-233.us-west-2.compute.amazonaws.com`
 
-as `root`:
+- access the server as `root`:
 > ssh -p 2200 -i ~/.ssh/udacity_key.rsa root@52.10.122.233
 
-as `grader`:
+- access the server as `grader`:
 > ssh -i ~/.ssh/grader_rsa -p 2200 grader@52.10.122.233
 
-# deployment (as root)
+## Deploy app server
+
+- build Ubuntu 14.04 image
+> on AWS, heroku, etc
 
 - create `grader` user
 > useradd -U -m grader -s/bin/bash grader 
@@ -55,33 +58,56 @@ ufw allow 123
 ufw enable
 ```
 
+## Install dependencies
 - install app dependencies
-> apt-get install git python pip sqlite3 
+> apt-get install git python pip postgresql 
 
 - install python dependencies 
 > pip install -r requirements.txt 
 
-- deploy and set perms on secret keys 
-> scp $destination client_secrets.json && chmod 705 client_secrets.json
+## Install the app
 
-- Install the app 
-> git clone https://github.com/bschmoker/goldlist.git /var/www/deploy_goldlist 
+- Get the latest app (without git history)
+> git clone --depth 1 --branch=master https://github.com/bschmoker/goldlist.git /var/www/deploy_goldlist 
 
-- hide git repo from public view
-> rm -rf /var/www/deploy_goldlist/.git/
-
-- [Install webserver dependencies](http://flask.pocoo.org/docs/0.10/deploying/mod_wsgi/)
-> apt-get install apache2 
-> apt-get install libapache2-mod-wsgi
+- Copy app secrets
+> mkdir /etc/goldlist
+> cp client_secrets.json /etc/goldlist
+> chmod 705 /etc/goldlist/client_secrets.json
 
 - create a dedicated user to run the app  
  > useradd -U -m catalog 
  > chown -R catalog:catalog /var/www/deploy_goldlist
 
+## Install the app database
+
+- start database daemon (if not already running)
+> service postgresl start
+
+- create postgres user `catalog` in DB
+> su postgres
+> createuser --pwprompt --createdb catalog
+> <enter password>
+
+- create database and assign to `catalog` user
+> createdb listings --owner catalog
+
+- generate database tables
+> python db_setup.py
+
+- (optional) generate sample data
+> python db_seed.py
+
+## Running the App
+- [Install webserver dependencies](http://flask.pocoo.org/docs/0.10/deploying/mod_wsgi/)
+> apt-get install apache2 
+> apt-get install libapache2-mod-wsgi
+
 - create a WSGI config for the app
  >echo -e "import sys\n sys.path.insert(0,"/var/www/deploy_goldlist")\nfrom goldlist import goldlist application=goldlist">/var/www/deploy_goldlist/goldlist.wsgi
 
-- create an apache vhost with
+
+- create an apache vhost to handle incoming requests
 ```
 <VirtualHost*>ServerNameec2­52­10­122­233.us­west­2.compute.amazonaws.com
 WSGIDaemonProcessgoldlistuser=cataloggroup=catalogthreads=5WSGIScriptAlias/
