@@ -51,7 +51,7 @@
 > service ssh restart
 
 - upgrade *nix libraries
- > apt-get update && upgrade
+ > apt-get update && apt-get upgrade
 
 - bounce the box
 > shutdown -r now
