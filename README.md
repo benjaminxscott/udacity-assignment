@@ -2,8 +2,8 @@
 ## Access the app
 `ec2-52-10-122-233.us-west-2.compute.amazonaws.com`
 
-- access the server as `root`:
-> ssh -p 2200 -i ~/.ssh/udacity_key.rsa root@52.10.122.233
+- access the server as `dev`:
+> ssh -p 2200 -i ~/.ssh/udacity_key.rsa dev@52.10.122.233
 
 - access the server as `grader`:
 > ssh -i ~/.ssh/grader_rsa -p 2200 grader@52.10.122.233
